@@ -1,0 +1,5 @@
+<h1 class="text-xl font-semibold mb-1"><%= t('subgroups_title') %></h1>
+<p class="text-sm text-slate-500 mb-4"><%= t('subgroups_hint') %></p>
+<div id="subgroups-container">
+  <%- include('_list', { items, classes, subjects, error }) %>
+</div>

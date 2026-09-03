@@ -1,0 +1,77 @@
+<div class="p-6">
+  <% if (!version) { %>
+    <h1 class="text-4xl font-bold mb-6"><%= t('tv_week_mode') %></h1>
+    <p class="text-2xl text-slate-400"><%= t('tv_none_published') %></p>
+  <% } else { %>
+    <% grids.forEach(function(item, idx) { %>
+      <section class="tv-slide <%= idx === 0 ? '' : 'hidden' %>" data-idx="<%= idx %>">
+        <h1 class="text-4xl font-bold mb-6"><%= item.cls.name %> — <%= t('shift_' + item.cls.shift) %></h1>
+        <div class="overflow-x-auto">
+          <table class="w-full text-lg border-collapse">
+            <thead>
+              <tr>
+                <th class="text-left p-2 bg-slate-800">№</th>
+                <% item.grid.days.forEach(function(d) { %><th class="p-2 bg-slate-800"><%= t('day_' + d.day_of_week) %></th><% }); %>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let n = 1; n <= item.grid.maxLesson; n++) { %>
+                <tr class="border-b border-slate-700">
+                  <td class="p-2 text-slate-400">
+                    <%= n %>
+                    <% if (item.grid.times[n]) { %><br><span class="text-sm"><%= item.grid.times[n].start_time %>–<%= item.grid.times[n].end_time %></span><% } %>
+                  </td>
+                  <% item.grid.days.forEach(function(d) { %>
+                    <% if (n > d.lessons_count) { %>
+                      <td></td>
+                    <% } else { %>
+                      <% const cellLessons = item.grid.cellMap[d.day_of_week + '_' + n] || []; %>
+                      <td class="p-2 align-top">
+                        <% if (!cellLessons.length || !cellLessons[0].subject_id) { %>
+                          <span class="text-slate-600">—</span>
+                        <% } else { %>
+                          <% cellLessons.forEach(function(l) { %>
+                            <div class="mb-1">
+                              <div class="font-medium"><%= l.subject_name %></div>
+                              <div class="text-sm text-slate-300"><%= l.teacher_name || '—' %></div>
+                            </div>
+                          <% }); %>
+                        <% } %>
+                      </td>
+                    <% } %>
+                  <% }); %>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    <% }); %>
+  <% } %>
+</div>
+
+<script>
+  (function () {
+    var slides = document.querySelectorAll('.tv-slide');
+    var i = 0;
+    if (slides.length > 1) {
+      setInterval(function () {
+        slides[i].classList.add('hidden');
+        i = (i + 1) % slides.length;
+        slides[i].classList.remove('hidden');
+      }, 8000);
+    }
+
+    var currentVersion = null;
+    async function checkVersion() {
+      try {
+        var res = await fetch('/tv/api/version');
+        var data = await res.json();
+        if (currentVersion === null) { currentVersion = data.versionId; return; }
+        if (data.versionId !== currentVersion) { location.reload(); }
+      } catch (e) { /* offline school network — retry next tick */ }
+    }
+    setInterval(checkVersion, 30000);
+    checkVersion();
+  })();
+</script>

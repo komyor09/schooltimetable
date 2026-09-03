@@ -1,0 +1,40 @@
+<% const subjIds = item ? item.subjects.map(s => s.id) : []; %>
+<% const busyDays = item ? item.busyDays : []; %>
+<div class="grid grid-cols-2 gap-3 mb-3 max-w-lg">
+  <div class="col-span-2">
+    <label class="field-label"><%= t('teachers_name') %></label>
+    <input type="text" name="full_name" value="<%= item ? item.full_name : '' %>" class="field-input" required>
+  </div>
+  <div>
+    <label class="field-label"><%= t('teachers_methodical_day') %></label>
+    <select name="methodical_day" class="field-input">
+      <option value=""><%= t('teachers_methodical_none') %></option>
+      <% DAYS.forEach(function(d) { %>
+        <option value="<%= d %>" <%= (item && item.methodical_day === d) ? 'selected' : '' %>><%= t('day_' + d) %></option>
+      <% }); %>
+    </select>
+  </div>
+</div>
+<div class="mb-3">
+  <label class="field-label"><%= t('teachers_subjects') %></label>
+  <div class="flex flex-wrap gap-3">
+    <% allSubjects.forEach(function(s) { %>
+      <label class="text-sm flex items-center gap-1">
+        <input type="checkbox" name="subject_ids" value="<%= s.id %>" <%= subjIds.includes(s.id) ? 'checked' : '' %>>
+        <%= s.name %>
+      </label>
+    <% }); %>
+    <% if (!allSubjects.length) { %><span class="text-slate-400 text-sm"><%= t('subjects_empty') %></span><% } %>
+  </div>
+</div>
+<div class="mb-3">
+  <label class="field-label"><%= t('teachers_busy_days') %></label>
+  <div class="flex flex-wrap gap-3">
+    <% DAYS.forEach(function(d) { %>
+      <label class="text-sm flex items-center gap-1">
+        <input type="checkbox" name="busy_days" value="<%= d %>" <%= busyDays.includes(d) ? 'checked' : '' %>>
+        <%= t('day_' + d + '_short') %>
+      </label>
+    <% }); %>
+  </div>
+</div>

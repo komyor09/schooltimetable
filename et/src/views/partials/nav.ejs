@@ -1,0 +1,18 @@
+<nav class="bg-slate-800 text-white">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-x-1 gap-y-2">
+    <a href="/classes" class="font-semibold mr-4 whitespace-nowrap"><%= t('app_title') %></a>
+    <a href="/classes" class="nav-link"><%= t('nav_classes') %></a>
+    <a href="/teachers" class="nav-link"><%= t('nav_teachers') %></a>
+    <a href="/subjects" class="nav-link"><%= t('nav_subjects') %></a>
+    <a href="/rooms" class="nav-link"><%= t('nav_rooms') %></a>
+    <a href="/curriculum" class="nav-link"><%= t('nav_curriculum') %></a>
+    <a href="/subgroups" class="nav-link"><%= t('nav_subgroups') %></a>
+    <a href="/lesson-times" class="nav-link"><%= t('nav_lesson_times') %></a>
+    <a href="/schedule" class="nav-link"><%= t('nav_schedule') %></a>
+    <a href="/public-view" class="nav-link"><%= t('nav_public') %></a>
+    <a href="/tv" class="nav-link"><%= t('nav_tv') %></a>
+    <span class="flex-1"></span>
+    <a href="/lang/ru" class="px-2 py-1 rounded text-xs <%= lang === 'ru' ? 'bg-white text-slate-800' : 'text-slate-300 hover:text-white' %>">RU</a>
+    <a href="/lang/tg" class="px-2 py-1 rounded text-xs <%= lang === 'tg' ? 'bg-white text-slate-800' : 'text-slate-300 hover:text-white' %>">TJ</a>
+  </div>
+</nav>

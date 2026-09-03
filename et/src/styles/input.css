@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .nav-link {
+    @apply px-3 py-1.5 rounded text-sm text-slate-200 hover:bg-slate-700 hover:text-white whitespace-nowrap;
+  }
+  .btn {
+    @apply inline-flex items-center px-3 py-1.5 rounded bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center px-3 py-1.5 rounded bg-slate-200 text-slate-800 text-sm font-medium hover:bg-slate-300;
+  }
+  .btn-danger {
+    @apply inline-flex items-center px-3 py-1.5 rounded bg-red-600 text-white text-sm font-medium hover:bg-red-700;
+  }
+  .field-label {
+    @apply block text-sm font-medium text-slate-700 mb-1;
+  }
+  .field-input {
+    @apply block w-full rounded border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm px-2 py-1.5 border;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow p-4;
+  }
+  .table-base {
+    @apply w-full text-sm border-collapse;
+  }
+  .table-base th {
+    @apply text-left bg-slate-100 px-3 py-2 border border-slate-200 font-semibold;
+  }
+  .table-base td {
+    @apply px-3 py-2 border border-slate-200 align-top;
+  }
+}

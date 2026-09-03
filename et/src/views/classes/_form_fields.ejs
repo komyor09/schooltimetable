@@ -1,0 +1,30 @@
+<div class="grid grid-cols-2 gap-3 mb-3 max-w-md">
+  <div>
+    <label class="field-label"><%= t('classes_name') %></label>
+    <input type="text" name="name" value="<%= item ? item.name : '' %>" class="field-input" required>
+  </div>
+  <div>
+    <label class="field-label"><%= t('classes_parallel') %></label>
+    <input type="text" name="parallel" value="<%= item ? item.parallel : '' %>" class="field-input" required>
+  </div>
+  <div>
+    <label class="field-label"><%= t('classes_shift') %></label>
+    <select name="shift" class="field-input">
+      <option value="1" <%= (!item || item.shift === 1) ? 'selected' : '' %>><%= t('shift_1') %></option>
+      <option value="2" <%= (item && item.shift === 2) ? 'selected' : '' %>><%= t('shift_2') %></option>
+    </select>
+  </div>
+</div>
+<div class="mb-3">
+  <label class="field-label"><%= t('classes_grid') %></label>
+  <p class="text-xs text-slate-500 mb-2"><%= t('classes_grid_hint') %></p>
+  <div class="flex gap-2 flex-wrap">
+    <% DAYS.forEach(function(d) { %>
+      <% const val = item && item.grid ? (item.grid.find(g => g.day_of_week === d) || {}).lessons_count : ''; %>
+      <div class="w-16 text-center">
+        <label class="block text-xs text-slate-500 mb-1"><%= t('day_' + d + '_short') %></label>
+        <input type="number" min="0" max="12" name="day_<%= d %>" value="<%= val || 0 %>" class="field-input text-center">
+      </div>
+    <% }); %>
+  </div>
+</div>

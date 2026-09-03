@@ -1,0 +1,44 @@
+<div id="rooms-container" class="card">
+  <% if (error) { %>
+    <p class="text-red-600 text-sm mb-2"><%= error %></p>
+  <% } %>
+  <table class="table-base mb-4">
+    <thead>
+      <tr><th><%= t('rooms_name') %></th><th class="w-40"></th></tr>
+    </thead>
+    <tbody>
+      <% if (!rooms.length) { %>
+        <tr><td colspan="2" class="text-slate-400"><%= t('rooms_empty') %></td></tr>
+      <% } %>
+      <% rooms.forEach(function(r) { %>
+        <% if (editId === r.id) { %>
+          <tr>
+            <form hx-put="/rooms/<%= r.id %>" hx-target="#rooms-container" hx-swap="outerHTML">
+              <td><input type="text" name="name" value="<%= r.name %>" class="field-input" autofocus></td>
+              <td class="space-x-2">
+                <button type="submit" class="btn"><%= t('action_save') %></button>
+                <button type="button" class="btn-secondary" hx-get="/rooms" hx-target="#rooms-container" hx-swap="outerHTML"><%= t('action_cancel') %></button>
+              </td>
+            </form>
+          </tr>
+        <% } else { %>
+          <tr>
+            <td><%= r.name %></td>
+            <td class="space-x-2">
+              <button class="btn-secondary" hx-get="/rooms/<%= r.id %>/edit" hx-target="#rooms-container" hx-swap="outerHTML"><%= t('action_edit') %></button>
+              <button class="btn-danger" hx-delete="/rooms/<%= r.id %>" hx-target="#rooms-container" hx-swap="outerHTML" hx-confirm="<%= t('confirm_delete') %>"><%= t('action_delete') %></button>
+            </td>
+          </tr>
+        <% } %>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <form hx-post="/rooms" hx-target="#rooms-container" hx-swap="outerHTML" class="flex items-end gap-2">
+    <div class="flex-1 max-w-xs">
+      <label class="field-label"><%= t('rooms_new') %></label>
+      <input type="text" name="name" class="field-input" required>
+    </div>
+    <button type="submit" class="btn"><%= t('action_add') %></button>
+  </form>
+</div>

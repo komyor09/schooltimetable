@@ -1,0 +1,45 @@
+<% if (!selectedClass || !grid) { %>
+  <p class="text-slate-400"><%= t('public_select_class') %></p>
+<% } else { %>
+  <div class="card overflow-x-auto">
+    <h2 class="font-medium mb-3"><%= selectedClass.name %> (<%= t('shift_' + selectedClass.shift) %>)</h2>
+    <table class="table-base">
+      <thead>
+        <tr>
+          <th class="w-24">№</th>
+          <% grid.days.forEach(function(d) { %><th><%= t('day_' + d.day_of_week) %></th><% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let n = 1; n <= grid.maxLesson; n++) { %>
+          <tr>
+            <td class="text-xs text-slate-500">
+              <%= n %>
+              <% if (grid.times[n]) { %><br><%= grid.times[n].start_time %>–<%= grid.times[n].end_time %><% } %>
+            </td>
+            <% grid.days.forEach(function(d) { %>
+              <% if (n > d.lessons_count) { %>
+                <td class="bg-slate-50"></td>
+              <% } else { %>
+                <% const cellLessons = grid.cellMap[d.day_of_week + '_' + n] || []; %>
+                <td>
+                  <% if (!cellLessons.length || !cellLessons[0].subject_id) { %>
+                    <span class="text-slate-300"><%= t('schedule_cell_empty') %></span>
+                  <% } else { %>
+                    <% cellLessons.forEach(function(l) { %>
+                      <div class="text-xs mb-1">
+                        <div class="font-medium"><%= l.subject_name %></div>
+                        <div><%= l.teacher_name || '—' %></div>
+                        <% if (l.room_name) { %><div class="text-slate-400"><%= l.room_name %></div><% } %>
+                      </div>
+                    <% }); %>
+                  <% } %>
+                </td>
+              <% } %>
+            <% }); %>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+<% } %>

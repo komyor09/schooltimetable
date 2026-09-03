@@ -1,0 +1,22 @@
+<div class="grid grid-cols-3 gap-3 mb-3 max-w-lg">
+  <div>
+    <label class="field-label"><%= t('curriculum_parallel') %></label>
+    <input type="text" name="parallel" list="parallels-list" value="<%= item ? item.parallel : '' %>" class="field-input" required>
+    <datalist id="parallels-list">
+      <% parallels.forEach(function(p) { %><option value="<%= p %>"><% }); %>
+    </datalist>
+  </div>
+  <div>
+    <label class="field-label"><%= t('curriculum_subject') %></label>
+    <select name="subject_id" class="field-input" required>
+      <option value=""></option>
+      <% allSubjects.forEach(function(s) { %>
+        <option value="<%= s.id %>" <%= (item && item.subject_id === s.id) ? 'selected' : '' %>><%= s.name %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div>
+    <label class="field-label"><%= t('curriculum_lessons') %></label>
+    <input type="number" min="1" max="20" name="lessons_per_week" value="<%= item ? item.lessons_per_week : '' %>" class="field-input" required>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div id="schedule-page">
+  <h1 class="text-xl font-semibold mb-4"><%= t('schedule_title') %></h1>
+
+  <div class="flex items-center gap-3 mb-4">
+    <button class="btn" hx-post="/schedule/generate" hx-target="#schedule-page" hx-swap="outerHTML" hx-indicator="#gen-indicator">
+      <%= t('schedule_generate') %>
+    </button>
+    <span id="gen-indicator" class="htmx-indicator text-sm text-slate-500"><%= t('schedule_generating') %></span>
+    <% if (draft) { %>
+      <button class="btn-secondary" hx-post="/schedule/publish" hx-target="#schedule-page" hx-swap="outerHTML" hx-confirm="<%= t('schedule_publish_confirm') %>">
+        <%= t('schedule_publish') %>
+      </button>
+    <% } %>
+    <% if (published) { %>
+      <span class="text-green-700 text-sm"><%= t('schedule_published_ok') %></span>
+    <% } %>
+  </div>
+
+  <% if (warnings && warnings.length) { %>
+    <div class="card mb-4 border border-amber-300 bg-amber-50">
+      <% warnings.forEach(function(w) { %>
+        <p class="text-sm text-amber-800">
+          <%= w.className %>:
+          <% if (w.type === 'plan_exceeds_grid') { %>
+            <%= w.count %> — плана больше, чем слотов в сетке класса
+          <% } else { %>
+            <%= w.count %> — свободных слотов в сетке больше, чем в плане
+          <% } %>
+        </p>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <div class="card mb-4">
+    <h2 class="font-medium mb-2"><%= t('schedule_gaps_title') %></h2>
+    <% if (!draft) { %>
+      <p class="text-slate-500 text-sm"><%= t('schedule_no_draft') %></p>
+    <% } else if (!gaps.length) { %>
+      <p class="text-green-700 text-sm"><%= t('schedule_gaps_none') %></p>
+    <% } else { %>
+      <p class="text-xs text-slate-500 mb-2"><%= t('schedule_gaps_hint') %></p>
+      <ul class="text-sm text-red-700 list-disc list-inside">
+        <% gaps.forEach(function(g) { %>
+          <li><%= g.class_name %> — <%= t('day_' + g.day_of_week) %>, <%= g.lesson_number %>: <%= g.subject_name %></li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </div>
+
+  <% if (draft) { %>
+    <div class="mb-3">
+      <label class="field-label"><%= t('schedule_select_class') %></label>
+      <select name="classId" class="field-input max-w-xs" hx-get="/schedule/grid" hx-target="#grid-container" hx-swap="innerHTML" hx-trigger="change">
+        <% classes.forEach(function(c) { %>
+          <option value="<%= c.id %>" <%= selectedClass && selectedClass.id === c.id ? 'selected' : '' %>><%= c.name %></option>
+        <% }); %>
+      </select>
+    </div>
+    <div id="grid-container">
+      <%- include('_grid_content', { classes, draft, selectedClass, grid }) %>
+    </div>
+  <% } %>
+</div>

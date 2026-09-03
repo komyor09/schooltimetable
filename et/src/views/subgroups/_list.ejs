@@ -1,0 +1,46 @@
+<div id="subgroups-container" class="card">
+  <% if (error) { %>
+    <p class="text-red-600 text-sm mb-2"><%= error %></p>
+  <% } %>
+  <table class="table-base mb-4">
+    <thead>
+      <tr>
+        <th><%= t('subgroups_class') %></th>
+        <th><%= t('subgroups_subject') %></th>
+        <th class="w-32"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (!items.length) { %>
+        <tr><td colspan="3" class="text-slate-400"><%= t('subgroups_empty') %></td></tr>
+      <% } %>
+      <% items.forEach(function(i) { %>
+        <tr>
+          <td><%= i.class_name %></td>
+          <td><%= i.subject_name %></td>
+          <td>
+            <button class="btn-danger" hx-delete="/subgroups/<%= i.id %>" hx-target="#subgroups-container" hx-swap="outerHTML" hx-confirm="<%= t('confirm_delete') %>"><%= t('action_delete') %></button>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <form hx-post="/subgroups" hx-target="#subgroups-container" hx-swap="outerHTML" class="flex items-end gap-2">
+    <div>
+      <label class="field-label"><%= t('subgroups_class') %></label>
+      <select name="class_id" class="field-input" required>
+        <option value=""></option>
+        <% classes.forEach(function(c) { %><option value="<%= c.id %>"><%= c.name %></option><% }); %>
+      </select>
+    </div>
+    <div>
+      <label class="field-label"><%= t('subgroups_subject') %></label>
+      <select name="subject_id" class="field-input" required>
+        <option value=""></option>
+        <% subjects.forEach(function(s) { %><option value="<%= s.id %>"><%= s.name %></option><% }); %>
+      </select>
+    </div>
+    <button type="submit" class="btn"><%= t('action_add') %></button>
+  </form>
+</div>

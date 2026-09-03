@@ -1,0 +1,30 @@
+<h1 class="text-xl font-semibold mb-4"><%= t('public_title') %></h1>
+
+<div class="flex gap-2 mb-4">
+  <a href="/public-view?mode=class" class="btn <%= mode === 'class' ? '' : 'btn-secondary' %>"><%= t('public_by_class') %></a>
+  <a href="/public-view?mode=teacher" class="btn <%= mode === 'teacher' ? '' : 'btn-secondary' %>"><%= t('public_by_teacher') %></a>
+</div>
+
+<% if (!version) { %>
+  <div class="card text-slate-500"><%= t('public_none_published') %></div>
+<% } else if (mode === 'class') { %>
+  <div class="mb-4 max-w-xs">
+    <label class="field-label"><%= t('public_select_class') %></label>
+    <select class="field-input" onchange="location.href='/public-view?mode=class&classId='+this.value">
+      <% classes.forEach(function(c) { %>
+        <option value="<%= c.id %>" <%= selectedClass && selectedClass.id === c.id ? 'selected' : '' %>><%= c.name %></option>
+      <% }); %>
+    </select>
+  </div>
+  <%- include('_class_grid', { selectedClass, grid }) %>
+<% } else { %>
+  <div class="mb-4 max-w-xs">
+    <label class="field-label"><%= t('public_select_teacher') %></label>
+    <select class="field-input" onchange="location.href='/public-view?mode=teacher&teacherId='+this.value">
+      <% teachers.forEach(function(tt) { %>
+        <option value="<%= tt.id %>" <%= selectedTeacher && selectedTeacher.id === tt.id ? 'selected' : '' %>><%= tt.full_name %></option>
+      <% }); %>
+    </select>
+  </div>
+  <%- include('_teacher_week', { selectedTeacher, teacherWeek }) %>
+<% } %>

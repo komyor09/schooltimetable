@@ -1,0 +1,44 @@
+<div id="subjects-container" class="card">
+  <% if (error) { %>
+    <p class="text-red-600 text-sm mb-2"><%= error %></p>
+  <% } %>
+  <table class="table-base mb-4">
+    <thead>
+      <tr><th><%= t('subjects_name') %></th><th class="w-40"></th></tr>
+    </thead>
+    <tbody>
+      <% if (!subjects.length) { %>
+        <tr><td colspan="2" class="text-slate-400"><%= t('subjects_empty') %></td></tr>
+      <% } %>
+      <% subjects.forEach(function(s) { %>
+        <% if (editId === s.id) { %>
+          <tr>
+            <form hx-put="/subjects/<%= s.id %>" hx-target="#subjects-container" hx-swap="outerHTML">
+              <td><input type="text" name="name" value="<%= s.name %>" class="field-input" autofocus></td>
+              <td class="space-x-2">
+                <button type="submit" class="btn"><%= t('action_save') %></button>
+                <button type="button" class="btn-secondary" hx-get="/subjects" hx-target="#subjects-container" hx-swap="outerHTML"><%= t('action_cancel') %></button>
+              </td>
+            </form>
+          </tr>
+        <% } else { %>
+          <tr>
+            <td><%= s.name %></td>
+            <td class="space-x-2">
+              <button class="btn-secondary" hx-get="/subjects/<%= s.id %>/edit" hx-target="#subjects-container" hx-swap="outerHTML"><%= t('action_edit') %></button>
+              <button class="btn-danger" hx-delete="/subjects/<%= s.id %>" hx-target="#subjects-container" hx-swap="outerHTML" hx-confirm="<%= t('confirm_delete') %>"><%= t('action_delete') %></button>
+            </td>
+          </tr>
+        <% } %>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <form hx-post="/subjects" hx-target="#subjects-container" hx-swap="outerHTML" class="flex items-end gap-2">
+    <div class="flex-1 max-w-xs">
+      <label class="field-label"><%= t('subjects_new') %></label>
+      <input type="text" name="name" class="field-input" required>
+    </div>
+    <button type="submit" class="btn"><%= t('action_add') %></button>
+  </form>
+</div>

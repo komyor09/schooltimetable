@@ -1,0 +1,36 @@
+<h1 class="text-xl font-semibold mb-1"><%= t('lesson_times_title') %></h1>
+<p class="text-sm text-slate-500 mb-4"><%= t('lesson_times_hint') %></p>
+
+<% if (saved) { %>
+  <p class="text-green-700 text-sm mb-3"><%= t('action_save') %> ✓</p>
+<% } %>
+
+<form method="post" action="/lesson-times" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <% [1, 2].forEach(function(shift) { %>
+    <div class="card">
+      <h2 class="font-medium mb-3"><%= t('shift_' + shift) %></h2>
+      <table class="table-base">
+        <thead>
+          <tr>
+            <th><%= t('lesson_times_number') %></th>
+            <th><%= t('lesson_times_start') %></th>
+            <th><%= t('lesson_times_end') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let n = 1; n <= MAX_LESSON; n++) { %>
+            <% const row = times[shift + '_' + n]; %>
+            <tr>
+              <td><%= n %></td>
+              <td><input type="time" name="start_<%= shift %>_<%= n %>" value="<%= row ? row.start_time : '' %>" class="field-input"></td>
+              <td><input type="time" name="end_<%= shift %>_<%= n %>" value="<%= row ? row.end_time : '' %>" class="field-input"></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  <% }); %>
+  <div class="md:col-span-2">
+    <button type="submit" class="btn"><%= t('action_save') %></button>
+  </div>
+</form>

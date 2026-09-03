@@ -1,0 +1,66 @@
+<div id="classes-container" class="card">
+  <% if (error) { %>
+    <p class="text-red-600 text-sm mb-2"><%= error %></p>
+  <% } %>
+  <table class="table-base mb-4">
+    <thead>
+      <tr>
+        <th><%= t('classes_name') %></th>
+        <th><%= t('classes_parallel') %></th>
+        <th><%= t('classes_shift') %></th>
+        <th><%= t('classes_grid') %></th>
+        <th class="w-40"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (!classes.length) { %>
+        <tr><td colspan="5" class="text-slate-400"><%= t('classes_empty') %></td></tr>
+      <% } %>
+      <% classes.forEach(function(c) { %>
+        <% if (editId === c.id) { %>
+          <tr>
+            <td colspan="5">
+              <form hx-put="/classes/<%= c.id %>" hx-target="#classes-container" hx-swap="outerHTML">
+                <%- include('_form_fields', { item: c, DAYS }) %>
+                <div class="space-x-2">
+                  <button type="submit" class="btn"><%= t('action_save') %></button>
+                  <button type="button" class="btn-secondary" hx-get="/classes" hx-target="#classes-container" hx-swap="outerHTML"><%= t('action_cancel') %></button>
+                </div>
+              </form>
+            </td>
+          </tr>
+        <% } else { %>
+          <tr>
+            <td class="font-medium"><%= c.name %></td>
+            <td><%= c.parallel %></td>
+            <td><%= t('shift_' + c.shift) %></td>
+            <td class="text-xs text-slate-600">
+              <% c.grid.forEach(function(g) { %>
+                <span class="inline-block mr-2"><%= t('day_' + g.day_of_week + '_short') %>:<%= g.lessons_count %></span>
+              <% }); %>
+            </td>
+            <td class="space-x-2 whitespace-nowrap">
+              <button class="btn-secondary" hx-get="/classes/<%= c.id %>/edit" hx-target="#classes-container" hx-swap="outerHTML"><%= t('action_edit') %></button>
+              <button class="btn-danger" hx-delete="/classes/<%= c.id %>" hx-target="#classes-container" hx-swap="outerHTML" hx-confirm="<%= t('confirm_delete') %>"><%= t('action_delete') %></button>
+            </td>
+          </tr>
+        <% } %>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (editId === 'new') { %>
+    <div class="border-t pt-4">
+      <h2 class="font-medium mb-2"><%= t('classes_new') %></h2>
+      <form hx-post="/classes" hx-target="#classes-container" hx-swap="outerHTML">
+        <%- include('_form_fields', { item: null, DAYS }) %>
+        <div class="space-x-2">
+          <button type="submit" class="btn"><%= t('action_add') %></button>
+          <button type="button" class="btn-secondary" hx-get="/classes" hx-target="#classes-container" hx-swap="outerHTML"><%= t('action_cancel') %></button>
+        </div>
+      </form>
+    </div>
+  <% } else { %>
+    <button class="btn" hx-get="/classes/new" hx-target="#classes-container" hx-swap="outerHTML"><%= t('classes_new') %></button>
+  <% } %>
+</div>

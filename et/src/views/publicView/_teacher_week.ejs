@@ -1,0 +1,28 @@
+<% if (!selectedTeacher) { %>
+  <p class="text-slate-400"><%= t('public_select_teacher') %></p>
+<% } else { %>
+  <div class="card">
+    <h2 class="font-medium mb-3"><%= selectedTeacher.full_name %></h2>
+    <% [1,2,3,4,5,6,7].forEach(function(d) { %>
+      <% const items = (teacherWeek[d] || []); %>
+      <% if (items.length) { %>
+        <div class="mb-4">
+          <h3 class="text-sm font-semibold text-slate-600 mb-1"><%= t('day_' + d) %></h3>
+          <table class="table-base">
+            <thead><tr><th class="w-24">№ / <%= t('lesson_times_start') %></th><th><%= t('curriculum_subject') %></th><th><%= t('classes_title') %></th><th><%= t('rooms_title') %></th></tr></thead>
+            <tbody>
+              <% items.forEach(function(l) { %>
+                <tr>
+                  <td class="text-xs text-slate-500"><%= l.lesson_number %><% if (l.start_time) { %><br><%= l.start_time %>–<%= l.end_time %><% } %></td>
+                  <td><%= l.subject_name %></td>
+                  <td><%= l.class_name %></td>
+                  <td><%= l.room_name || '' %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    <% }); %>
+  </div>
+<% } %>

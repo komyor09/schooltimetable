@@ -1,0 +1,22 @@
+{
+  "name": "electronnoe-raspisanie",
+  "version": "1.0.0",
+  "description": "Электронное расписание уроков — МТМУ №40",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch-path=src --watch-path=locales src/server.js",
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/vendor/tailwind.css --minify"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-ejs-layouts": "^2.5.1"
+  },
+  "devDependencies": {
+    "htmx.org": "^2.0.10",
+    "tailwindcss": "^3.4.13"
+  }
+}

@@ -1,0 +1,36 @@
+<div class="no-print">
+  <h1 class="text-xl font-semibold mb-4"><%= t('print_title') %></h1>
+  <div class="flex gap-2 mb-4">
+    <a href="/print?mode=class" class="btn <%= mode === 'class' ? '' : 'btn-secondary' %>"><%= t('print_by_class') %></a>
+    <a href="/print?mode=teacher" class="btn <%= mode === 'teacher' ? '' : 'btn-secondary' %>"><%= t('print_by_teacher') %></a>
+    <button class="btn-secondary ml-auto" onclick="window.print()"><%= t('print_button') %></button>
+  </div>
+
+  <% if (version) { %>
+    <% if (mode === 'class') { %>
+      <div class="mb-4 max-w-xs">
+        <select class="field-input" onchange="location.href='/print?mode=class&classId='+this.value">
+          <% classes.forEach(function(c) { %>
+            <option value="<%= c.id %>" <%= selectedClass && selectedClass.id === c.id ? 'selected' : '' %>><%= c.name %></option>
+          <% }); %>
+        </select>
+      </div>
+    <% } else { %>
+      <div class="mb-4 max-w-xs">
+        <select class="field-input" onchange="location.href='/print?mode=teacher&teacherId='+this.value">
+          <% teachers.forEach(function(tt) { %>
+            <option value="<%= tt.id %>" <%= selectedTeacher && selectedTeacher.id === tt.id ? 'selected' : '' %>><%= tt.full_name %></option>
+          <% }); %>
+        </select>
+      </div>
+    <% } %>
+  <% } %>
+</div>
+
+<% if (!version) { %>
+  <div class="card text-slate-500"><%= t('public_none_published') %></div>
+<% } else if (mode === 'class') { %>
+  <%- include('../publicView/_class_grid', { selectedClass, grid }) %>
+<% } else { %>
+  <%- include('../publicView/_teacher_week', { selectedTeacher, teacherWeek }) %>
+<% } %>

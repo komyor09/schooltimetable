@@ -1,0 +1,68 @@
+<div class="p-6">
+  <h1 class="text-4xl font-bold mb-6"><%= t('tv_day_mode') %> — <%= t('day_' + dayOfWeek) %></h1>
+
+  <% if (!version) { %>
+    <p class="text-2xl text-slate-400"><%= t('tv_none_published') %></p>
+  <% } else { %>
+    <% [ [1, matrix1], [2, matrix2] ].forEach(function(pair) { %>
+      <% const shift = pair[0], matrix = pair[1]; %>
+      <% if (matrix.classes.length) { %>
+        <h2 class="text-2xl font-semibold mt-8 mb-3 text-blue-300"><%= t('shift_' + shift) %></h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-lg border-collapse">
+            <thead>
+              <tr>
+                <th class="text-left p-2 bg-slate-800 sticky left-0">№</th>
+                <% matrix.classes.forEach(function(c) { %>
+                  <th class="p-2 bg-slate-800 whitespace-nowrap"><%= c.name %></th>
+                <% }); %>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let n = 1; n <= matrix.maxLesson; n++) { %>
+                <tr class="border-b border-slate-700">
+                  <td class="p-2 text-slate-400 sticky left-0 bg-slate-900">
+                    <%= n %>
+                    <% if (matrix.times[n]) { %><br><span class="text-sm"><%= matrix.times[n].start_time %></span><% } %>
+                  </td>
+                  <% matrix.classes.forEach(function(c) { %>
+                    <% const cellLessons = matrix.cellMap[c.id + '_' + n] || []; %>
+                    <td class="p-2 align-top">
+                      <% if (!cellLessons.length || !cellLessons[0].subject_id) { %>
+                        <span class="text-slate-600">—</span>
+                      <% } else { %>
+                        <% cellLessons.forEach(function(l) { %>
+                          <div class="mb-1">
+                            <div class="font-medium"><%= l.subject_name %></div>
+                            <div class="text-sm text-slate-300"><%= l.teacher_name || '—' %></div>
+                          </div>
+                        <% }); %>
+                      <% } %>
+                    </td>
+                  <% }); %>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    <% }); %>
+  <% } %>
+</div>
+
+<script>
+  (function () {
+    var currentVersion = null;
+    async function checkVersion() {
+      try {
+        var res = await fetch('/tv/api/version');
+        var data = await res.json();
+        if (currentVersion === null) { currentVersion = data.versionId; return; }
+        if (data.versionId !== currentVersion) { location.reload(); }
+      } catch (e) { /* offline school network — retry next tick */ }
+    }
+    setInterval(checkVersion, 30000);
+    checkVersion();
+    setInterval(function () { location.reload(); }, 3600000);
+  })();
+</script>

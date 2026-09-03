@@ -1,0 +1,60 @@
+<div id="curriculum-container" class="card">
+  <% if (error) { %>
+    <p class="text-red-600 text-sm mb-2"><%= error %></p>
+  <% } %>
+  <table class="table-base mb-4">
+    <thead>
+      <tr>
+        <th><%= t('curriculum_parallel') %></th>
+        <th><%= t('curriculum_subject') %></th>
+        <th><%= t('curriculum_lessons') %></th>
+        <th class="w-40"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (!entries.length) { %>
+        <tr><td colspan="4" class="text-slate-400"><%= t('curriculum_empty') %></td></tr>
+      <% } %>
+      <% entries.forEach(function(e) { %>
+        <% if (editId === e.id) { %>
+          <tr>
+            <td colspan="4">
+              <form hx-put="/curriculum/<%= e.id %>" hx-target="#curriculum-container" hx-swap="outerHTML">
+                <%- include('_form_fields', { item: e, allSubjects, parallels }) %>
+                <div class="space-x-2">
+                  <button type="submit" class="btn"><%= t('action_save') %></button>
+                  <button type="button" class="btn-secondary" hx-get="/curriculum" hx-target="#curriculum-container" hx-swap="outerHTML"><%= t('action_cancel') %></button>
+                </div>
+              </form>
+            </td>
+          </tr>
+        <% } else { %>
+          <tr>
+            <td class="font-medium"><%= e.parallel %></td>
+            <td><%= e.subject_name %></td>
+            <td><%= e.lessons_per_week %></td>
+            <td class="space-x-2 whitespace-nowrap">
+              <button class="btn-secondary" hx-get="/curriculum/<%= e.id %>/edit" hx-target="#curriculum-container" hx-swap="outerHTML"><%= t('action_edit') %></button>
+              <button class="btn-danger" hx-delete="/curriculum/<%= e.id %>" hx-target="#curriculum-container" hx-swap="outerHTML" hx-confirm="<%= t('confirm_delete') %>"><%= t('action_delete') %></button>
+            </td>
+          </tr>
+        <% } %>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <% if (editId === 'new') { %>
+    <div class="border-t pt-4">
+      <h2 class="font-medium mb-2"><%= t('curriculum_new') %></h2>
+      <form hx-post="/curriculum" hx-target="#curriculum-container" hx-swap="outerHTML">
+        <%- include('_form_fields', { item: null, allSubjects, parallels }) %>
+        <div class="space-x-2">
+          <button type="submit" class="btn"><%= t('action_add') %></button>
+          <button type="button" class="btn-secondary" hx-get="/curriculum" hx-target="#curriculum-container" hx-swap="outerHTML"><%= t('action_cancel') %></button>
+        </div>
+      </form>
+    </div>
+  <% } else { %>
+    <button class="btn" hx-get="/curriculum/new" hx-target="#curriculum-container" hx-swap="outerHTML"><%= t('curriculum_new') %></button>
+  <% } %>
+</div>

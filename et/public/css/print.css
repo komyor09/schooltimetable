@@ -1,0 +1,12 @@
+@media print {
+  nav, footer, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}
