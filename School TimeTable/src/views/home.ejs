@@ -1,0 +1,39 @@
+<div class="text-center mb-10 mt-6">
+  <h1 class="text-2xl font-semibold"><%= t('app_title') %></h1>
+  <p class="text-slate-500 mt-1"><%= t('school_name') %> — <%= t('home_tagline') %></p>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+  <a href="/classes" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_admin_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_admin_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_admin_action') %> →</span>
+  </a>
+  <a href="/public-view" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_public_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_public_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_public_action') %> →</span>
+  </a>
+  <a href="/tv" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_tv_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_tv_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_tv_action') %> →</span>
+  </a>
+  <a href="/print" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_print_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_print_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_print_action') %> →</span>
+  </a>
+</div>
+
+<div class="max-w-5xl mx-auto mt-6">
+  <div class="card border border-dashed border-amber-300 bg-amber-50 flex items-center justify-between gap-4 flex-wrap">
+    <div>
+      <h2 class="font-medium text-amber-900"><%= t('seed_title') %></h2>
+      <p class="text-sm text-amber-700"><%= t('seed_desc') %></p>
+    </div>
+    <form method="post" action="/seed/generate" onsubmit="return confirm('<%= t('seed_confirm') %>')">
+      <button type="submit" class="btn-secondary border border-amber-400"><%= t('seed_button') %></button>
+    </form>
+  </div>
+</div>
