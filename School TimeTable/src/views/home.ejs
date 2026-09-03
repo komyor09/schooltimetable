@@ -1,0 +1,27 @@
+<div class="text-center mb-10 mt-6">
+  <h1 class="text-2xl font-semibold"><%= t('app_title') %></h1>
+  <p class="text-slate-500 mt-1"><%= t('school_name') %> — <%= t('home_tagline') %></p>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+  <a href="/classes" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_admin_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_admin_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_admin_action') %> →</span>
+  </a>
+  <a href="/public-view" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_public_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_public_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_public_action') %> →</span>
+  </a>
+  <a href="/tv" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_tv_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_tv_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_tv_action') %> →</span>
+  </a>
+  <a href="/print" class="card hover:shadow-md hover:-translate-y-0.5 transition block">
+    <h2 class="font-medium mb-1"><%= t('home_print_title') %></h2>
+    <p class="text-sm text-slate-500 mb-3"><%= t('home_print_desc') %></p>
+    <span class="text-blue-600 text-sm font-medium"><%= t('home_print_action') %> →</span>
+  </a>
+</div>

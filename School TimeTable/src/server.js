@@ -25,7 +25,7 @@ app.get('/lang/:lang', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.redirect('/classes');
+  res.render('home');
 });
 
 app.use('/classes', require('./routes/classes'));
