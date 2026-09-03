@@ -39,6 +39,7 @@ app.use('/schedule', require('./routes/schedule'));
 app.use('/public-view', require('./routes/publicView'));
 app.use('/tv', require('./routes/tv'));
 app.use('/print', require('./routes/print'));
+app.use('/seed', require('./routes/seed'));
 
 app.use((req, res) => {
   res.status(404).render('404', { layout: 'layout' });

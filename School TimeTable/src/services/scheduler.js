@@ -61,13 +61,17 @@ function placeSubjects(classes, curriculumByParallel) {
 
   for (const cls of classes) {
     const plan = curriculumByParallel[cls.parallel] || [];
-    const bag = plan.map((p) => ({ subjectId: p.subjectId, remaining: p.lessonsPerWeek }));
+    let bag = plan.map((p) => ({ subjectId: p.subjectId, remaining: p.lessonsPerWeek }));
     const totalPlan = bag.reduce((s, b) => s + b.remaining, 0);
     const totalSlots = cls.grid.reduce((s, g) => s + g.lessons_count, 0);
 
     for (const dayEntry of cls.grid) {
       const usedToday = new Set();
       for (let n = 1; n <= dayEntry.lessons_count; n++) {
+        // Shuffle before the (stable) sort so classes that share an identical curriculum
+        // — siblings in the same parallel — don't all place the same subject in the same
+        // slot every time, which would force them to compete for one teacher at once.
+        bag = shuffle(bag);
         bag.sort((a, b) => b.remaining - a.remaining);
         let chosen = bag.find((b) => b.remaining > 0 && !usedToday.has(b.subjectId));
         if (!chosen) chosen = bag.find((b) => b.remaining > 0);
